@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Rerperderp{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <div class="hero-unit">
+                <h1>{{self.title()}} <small>a <em>small</em> repository browser</small></h1>
+
+                <h3>Getting started:</h3>
+                    <ul>
+                        <li>Documentation</li>
+                        <li>Repository Browser</li>
+                        <li>Package Listing</li>
+                    </ul>
+            </span>
+        </div>
+    </div>
+{% endblock %}
+

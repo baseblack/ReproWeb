@@ -1,0 +1,18 @@
+<head>
+    {% block head %}
+    <title>{% block title %}{% endblock %} - RepoWeb</title>
+
+    <!-- bootstrap -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/datatables.css" rel="stylesheet">
+    <script src="/static/js/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" language="javascript" src="/static/js/jquery.dataTables.js"></script>
+    <script src="/static/js/datatables_js.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    {% include 'javascript.html' %}
+    {% endblock %}
+</head>

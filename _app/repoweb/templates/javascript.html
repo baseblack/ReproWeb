@@ -1,0 +1,24 @@
+<script>
+    $(document).ready(function () {
+        $('.navbar li').click(function(e) {
+            if (!$this.hasClass('dropdown')) {
+                $('.navbar li').removeClass('active');
+            }
+
+            var $this = $(this);
+
+            if (!$this.hasClass('active')) {
+                if (!$this.hasClass('dropdown')) {
+                    $this.addClass('active');
+                }
+            }
+            //e.preventDefault();
+        });
+
+        var url = window.location;
+        console.log(url)
+        $('.navbar li').removeClass('active');
+        $('ul.nav a[href="'+ url.pathname +'"]').parent().addClass('active');
+    });
+</script>
+

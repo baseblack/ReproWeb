@@ -1,0 +1,26 @@
+{% block navbar %}
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <a class="brand" href="/">Rerperderp</a>
+    <ul class="nav pull-left">
+      <li class="divider-vertical"></li>
+      <li><a href="/api/distributions/">Browse</a></li>
+      <li><a href="/api/packages/">Search</a></li>
+    </ul>
+
+    <ul class="nav pull-right">
+      <li><a href="/api/help">Help</a></li>
+      <li class="divider-vertical"></li>
+      <li class="dropdown">
+        <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-cog"></i> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+            <li><a tabindex="-1", href="/settings">Settings</a></li>
+            <li><a tabindex="-1", href="/about">About</a></li>
+        </ul>
+    </ul>
+  </div>
+</div>
+{% include "breadcrumb.html" %}
+{% endblock %}

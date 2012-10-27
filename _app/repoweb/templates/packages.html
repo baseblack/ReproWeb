@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Packages: {{codename}}/{{component}}/{{architecture}}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script>
+        $(document).ready(function() {
+            $('#table_packages').dataTable();
+        } );
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="span10 offset1">
+            <h1>{{ self.title() }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10 offset1">
+            <div class="span12">
+                <table class="table table-bordered table-striped" id="table_packages">
+                    <thead>
+                        <th>Name</th>
+                        <th>Current Version</th>
+                        <th>Distribution</th>
+                        <th>Component</th>
+                        <th>Architecture</th>
+                    </thead>
+                    <tbody>
+                    {% for item in packages %}
+                    {% if item %}
+                        <tr>
+                            <td><a href='{{item.url}}'>{{ item.get('package') }}</a></td>
+                            <td>{{ item.get('version') }}</td>
+                            <td><a href="distribution/{{item.get('codename')}}">{{ item.get('codename') }}</a></td>
+                            <td><a href="distribution/{{item.get('codename')}}/{{item.get('component')}}">{{ item.get('component') }}</a></td>
+                            <td><a href="distribution/{{item.get('codename')}}/{{item.get('component')}}/{{item.get('architecture')}}">{{ item.get('architecture') }}</a></td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block title %}Settings{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <script>
+        $('.input').bind('keypress', false);
+
+        $(function() {
+            $(".btn#save_settings").click(function() {
+                var settingsfile = $("input#inputSettings").val();
+                var cachepath = $("input#inputCache").val();
+                var basedir = $("input#inputBasedir").val();
+                var outdir = $("input#inputOutdir").val();
+                var dbdir = $("input#inputDBdir").val();
+                var distdir = $("input#inputDistdir").val();
+
+                var dataString = {'settingsfile': settingsfile,
+                                  'cachepath': cachepath,
+                                  'basedir': basedir,
+                                  'outdir': outdir,
+                                  'dbdir': dbdir,
+                                  'distdir': distdir};
+
+                $.ajax({
+                    type: "POST",
+                    url: "/settings",
+                    datatype: 'json',
+                    data: dataString,
+                    success: function(data) {
+                        response = eval("(" + data + ")");
+                        console.log(response)
+                        if (response.status == 'OK'){
+                            $('.alert-success').show();
+                        } else {
+                            $('.alert-error').show();
+                        };
+                    }
+                });
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            $('.alert-error').hide();
+            $('.alert-success').hide();
+        });
+    </script>
+
+
+    <div class="row">
+        <div class="span10 offset1">
+            <h1>Settings</h1>
+        </div>
+    </div>
+
+    <div class="alert alert-success">
+        <b>Success</b> Settings have been stored. Return to the front page to begin.
+    </div>
+
+    <div class="alert alert-error">
+        <b>Fail</b> Settings could not be stored. Ensure you have entered a valid file path.
+    </div>
+
+    <div class="row">
+        <div class="span12 offset1">
+            <form class="form-horizontal">
+                <fieldset><legend>Browser</legend>
+                <div class="control-group">
+                        <label class="control-label" for="inputSettings">Settings File</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputSettings" placeholder="/var/tmp/repoweb/settings.json" value={{settings.settingsfile}}>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="inputCache">Cache Directory</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputCache" placeholder="/var/cache/repoweb" value={{settings.cachepath}}>
+                        </div>
+                </div>
+                </fieldset>
+
+                <fieldset><legend>Reprepro</legend>
+                <div class="control-group">
+                        <label class="control-label" for="inputBasedir">Base Directory</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputBasedir" placeholder="/mnt/tech/repositories/apt/auto-lucid" value={{settings.basedir}}>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="inputOutdir">Output Directory</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputOutdir" placeholder="$basedir" value={{settings.outdir}}>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="inputConfdir">Configuration Directory</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputConfdir" placeholder="$basedir/conf" value={{settings.confdir}}>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="inputDBdir">Database Directory</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputDBdir" placeholder="$basedir/db" value={{settings.dbdir}}>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="inputDistdir">Distribution Directory</label>
+                        <div class="controls">
+                            <input class="input-xxlarge" type="text" id="inputDistdir" placeholder="$basedir/dists" value={{settings.distdir}}>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button id="save_settings" type="submit" class="btn btn-primary" data-loading-text="Saving...">Save</button>
+                    </div>
+                </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
