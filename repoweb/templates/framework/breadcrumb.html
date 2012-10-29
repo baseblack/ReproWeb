@@ -1,0 +1,12 @@
+{# Generates a dynamic breadcrumb based on the current api path #}
+{# Only renders the breadcrumb in crumbs have been added to the request's global var. #}
+
+{% if g.breadcrumb is defined %}
+<ul class="breadcrumb static">
+
+  {% for crumb in g.breadcrumb %}
+  <li><a href="{{crumb.url}}">{{crumb.name}}</a> <span class="divider">/</span></li>
+  {% endfor %}
+
+</ul>
+{% endif %}

@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
-{% include 'header.html' %}
+{% include 'framework/header.html' %}
 <body>
   <div id="wrap">
-    {% include 'navbar.html' %}
+    {% include 'framework/navbar.html' %}
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="push"></div>
   </div>
-  {% include 'footer.html' %}
+  {% include 'framework/footer.html' %}
 </body>
 </html>

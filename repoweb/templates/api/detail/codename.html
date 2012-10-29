@@ -1,0 +1,34 @@
+{% extends "framework/layout.html" %}
+{% block title %}Browse: {{ codename }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h1>Components: {{codename}}</h1>
+        </div>
+    </div>
+
+    {% if components is defined %}
+    <div class="row-fluid">
+        <div class="span6 offset1">
+            <table class="table">
+                {% for comp in components %}
+                <tr>
+                    <td>
+                        <span><i class="icon-th-list"></i></span>
+                        <span><a href="{{comp.url}}">{{comp.component}}</a></span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    {% else %}
+        <div>none defined</div>
+    {% endif %}
+{% endblock %}
+

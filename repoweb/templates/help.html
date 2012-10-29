@@ -1,0 +1,168 @@
+{% extends "framework/layout.html" %}
+{% block title %}About{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <div class="span10 offset1">
+
+            {# BEGIN markdown pre-generated glossary. #}
+            <h2>Glossary</h2>
+                <p>To help Paul keep ontop of all this new found <em>jargon</em> here is a simple terms of reference.</p>
+                <h3>A</h3>
+                <ul>
+                <li>
+                <h4>Architecture</h4>
+                <p>Specifies the hardware architecture which the software package is capable of
+                running on. Examples of this are <code>amd64</code>, <code>i386</code> and <code>all</code>.</p>
+                </li>
+                </ul>
+                <h3>B</h3>
+                <ul>
+                <li>
+                <h4>Basedir</h4>
+                <p>Base directory of the managed repository. The default settings for a reprepro/apt
+                repository expect all other directories to be found relative to this path.</p>
+                <blockquote>
+                <p>For example; the /pool directory is expected to be located at $basedir/pool.</p>
+                </blockquote>
+                </li>
+                </ul>
+                <h3>C</h3>
+                <ul>
+                <li>
+                <h4>Codename</h4>
+                <p>A repository can contain any number of distributions. For example <code>lucid</code>,
+                <code>precise</code>, <code>quantal</code>. Each of these distributions is identifed by their <em>Codename</em>.</p>
+                </li>
+                <li>
+                <h4>Component</h4>
+                <p>Packages are grouped within a distribtion/codename into Components. Under the
+                offical ubuntu repositories there are 4. </p>
+                <blockquote>
+                <p><strong>Main</strong> - Officially supported software.</p>
+                <p><strong>Restricted</strong> - Supported software that is not available under a completely free
+                                  license.</p>
+                <p><strong>Universe</strong> - Community maintained software, i.e. not officially supported
+                                software.</p>
+                <p><strong>Multiverse</strong> - Software that is not free. </p>
+                </blockquote>
+                </li>
+                <li>
+                <h4>Confdir</h4>
+                <p>Directory which houses the configuration files for the managed repository.
+                Files found in this directory include <code>options</code>, and <code>distributions</code>. </p>
+                <p>See the reprepro <a href="http://mirrorer.alioth.debian.org/">documentation</a> for details.</p>
+                </li>
+                </ul>
+                <h3>D</h3>
+                <ul>
+                <li>
+                <h4>Deb File</h4>
+                <p>Debian software package file. The software is stored within the package alongside
+                control and pre/post installation/removal scripts.</p>
+                <p>The debs may be downloaded and locally installed using <code>dpkg -i $debfile</code>.</p>
+                </li>
+                <li>
+                <h4>Distdir</h4>
+                <p>Directory which houses the Releases files for distributions contained in the
+                repository. These directories/files are managed by reprepro.</p>
+                <p>See the reprepro <a href="http://mirrorer.alioth.debian.org/">documentation</a> for details.  <br>
+                </p>
+                </li>
+                <li>
+                <h4>Distribution</h4>
+                <p>A repository can contain any number of distributions. For example <code>lucid</code>,
+                <code>precise</code>, <code>quantal</code>. Each of these distributions is identifed by their <em>Codename</em>.</p>
+                </li>
+                <li>
+                <h4>Dump References</h4>
+                <p>A <a href="http://mirrorer.alioth.debian.org/">reprepro</a> action. Causes reprepro to dump a
+                list of each of the currently referenced packages within the repository.</p>
+                <p>If the Codename/Component for a package has been deleted then the package will no
+                longer be referenced and so will not be listed. Old versions of a package (assuming
+                these are not being deleted will also not be listed.</p>
+                </li>
+                </ul>
+                <h3>E</h3>
+                <h3>F</h3>
+                <h3>G</h3>
+                <h3>H</h3>
+                <h3>I</h3>
+                <h3>J</h3>
+                <h3>K</h3>
+                <h3>L</h3>
+                <h3>M</h3>
+                <ul>
+                <li>
+                <h4>Maintainer</h4>
+                <p>Each package deb when it is added to the repository should have specifed who the
+                package author/maintainer is. This person/team is responsible for updates and code
+                fixes required to the software contained in the package.</p>
+                </li>
+                </ul>
+                <h3>N</h3>
+                <h3>O</h3>
+                <ul>
+                <li>
+                <h4>Outdir</h4>
+                <p>Sets  the base-dir of the repository to manage, i.e. where the pool/ subdirectory
+                resides. And in which the dists/ directory is placed by default.  If</p>
+                </li>
+                </ul>
+                <h3>P</h3>
+                <ul>
+                <li>
+                <h4>Package</h4>
+                <p>Stored file, with manually injected or downloaded from another repository into the
+                pool/ hierarchy. </p>
+                </li>
+                </ul>
+                <h3>Q</h3>
+                <h3>R</h3>
+                <ul>
+                <li>
+                <h4>Repository</h4>
+                <p>A repository is an organised software archive. Each repository may be organized
+                into a number of discreet distributions. These are refered to by their Codenames.</p>
+                <p>Each distribution is futher organised into separate areas which contain software
+                of different types/roles. For example, supported and unsupported software.</p>
+                <p>A reprepro managed repository is a disk based file hierarchy which uses a berkley
+                db to track its state. </p>
+                </li>
+                <li>
+                <h4>Reprepro</h4>
+                <p>Reprepro (formerly having the working title mirrorer) is a tool to handle local
+                repositories of debian packages.</p>
+                <ul>
+                <li>local addition of files or automatically getting them from some remote repository</li>
+                <li>files are stored in a pool/-hirachy</li>
+                <li>Uses Berkeley libdb, so no database-server is need, but information is stored in  <br>
+                  local files</li>
+                </ul>
+                </li>
+                </ul>
+                <h3>S</h3>
+                <h3>T</h3>
+                <h3>U</h3>
+                <h3>V</h3>
+                <ul>
+                <li>
+                <h4>Version</h4>
+                <p>Each package may only have 1 version of itself stored within a distribtion at a
+                time. When a package file is injected into the repository it's version is checked<br>
+                against the currently referenced version. If they are the same the new file is
+                rejected. If the new file's version is greater than the existing version then the
+                old package file is unreferenced and the new one added to the pool/.</p>
+                </li>
+                </ul>
+                <h3>W</h3>
+                <h3>X</h3>
+                <h3>Y</h3>
+                <h3>Z</h3>
+            {# END markdown pre-generated glossary. #}
+
+        </div>
+    </div>
+{% endblock %}

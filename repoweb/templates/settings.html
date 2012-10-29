@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "framework/layout.html" %}
 {% block title %}Settings{% endblock %}
 {% block head %}
     {{ super() }}
@@ -70,7 +70,7 @@
                 <div class="control-group">
                         <label class="control-label" for="inputSettings">Settings File</label>
                         <div class="controls">
-                            <input class="input-xxlarge" type="text" id="inputSettings" placeholder="/var/tmp/repoweb/settings.json" value={{settings.settingsfile}}>
+                            <input class="input-xxlarge" type="text" id="inputSettings" placeholder={{config.REPO_SETTINGS_FILE}} value={{settings.settingsfile}}>
                         </div>
                 </div>
                 <div class="control-group">

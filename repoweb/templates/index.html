@@ -1,0 +1,30 @@
+{% extends "framework/layout.html" %}
+{% block title %}{{config.APP_NAME}}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <script>
+        $('#reprepro').tooltip({})
+    </script>
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <div class="hero-unit">
+                <h1>{{self.title()}} <small>a <em>micro</em> repository browser</small></h1>
+
+                <h2>Getting started:</h2>
+                    <ul class="unstyled">
+                        <li><h3>Requirements</h3></li>
+                            <ul>
+                                <p class="text-info" >This browser requires the debian apt repository tool/mirrorer <a id="reprepro" href="#" rel="tooltip" title="first tooltip">reprepro</a>.<br>
+                                ... and some common sense. </p>
+                            </ul>
+                        <li>Repository Browser</li>
+                        <li>Package Listing</li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

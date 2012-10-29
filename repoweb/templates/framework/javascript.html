@@ -19,6 +19,12 @@
         console.log(url)
         $('.navbar li').removeClass('active');
         $('ul.nav a[href="'+ url.pathname +'"]').parent().addClass('active');
+
+        // move to jsblock in package_detail.html
+        $('#download-deb').click(function() {
+            var url = window.location;
+            window.location = url + "/download"
+        });
     });
 </script>
 

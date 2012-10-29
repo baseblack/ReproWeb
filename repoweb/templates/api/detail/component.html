@@ -1,0 +1,33 @@
+{% extends "framework/layout.html" %}
+{% block title %}Browse: {{codename}}/{{component}}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h1>Architectures: {{codename}} | {{component}}</h1>
+        </div>
+    </div>
+
+    {% if archs is defined %}
+    <div class="row-fluid">
+        <div class="span6 offset1">
+            <table class="table">
+                {% for arch in archs %}
+                <tr>
+                    <td>
+                        <span><i class="icon-briefcase"></i></span>
+                        <span><a href="{{arch.url}}">{{arch.architecture}}</a></span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    {% else %}
+        <div>none defined</div>
+    {% endif %}
+{% endblock %}

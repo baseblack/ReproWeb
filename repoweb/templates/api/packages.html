@@ -1,0 +1,45 @@
+{% extends "framework/layout.html" %}
+{% block title %}Packages: {{codename}} | {{component}} | {{architecture}}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script>
+        $(document).ready(function() {
+            $('#table_packages').dataTable();
+        } );
+    </script>
+{% endblock %}
+{% block content %}
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h1>Packages:</h1>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <table class="table" id="table_packages">
+                <thead>
+                    <th>Name <i class="icon-folder-open"></i></th>
+                    <th>Current Version <i class="icon-tags"></i></th>
+                    <th>Distribution <i class="icon-book"></i></th>
+                    <th>Component <i class="icon-th-list"></i></th>
+                    <th>Architecture <i class="icon-briefcase"></i></th>
+                </thead>
+                <tbody>
+                {% for item in packages %}
+                {% if item %}
+                    <tr>
+                        <td><a href="{{ url_for('get_package_versions', **item) }}">{{ item.package }}</a></td>
+                        <td><a href="{{ url_for('get_package_detail', **item) }}">{{ item.version }}</td>
+                        <td><a href="{{ url_for('get_codename_detail', **item) }}">{{ item.codename }}</a></td>
+                        <td><a href="{{ url_for('get_component_detail', **item) }}">{{ item.component }}</a></td>
+                        <td><a href="{{ url_for('get_architecture_detail', **item) }}">{{ item.architecture }}</a></td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

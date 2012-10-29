@@ -1,0 +1,46 @@
+{% extends "framework/layout.html" %}
+{% block title %}Browse{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h1>Distributions: {{g.repository.name}}</h1>
+        </div>
+    </div>
+
+    {% if codenames is defined %}
+    {% for dist in codenames %}
+    <div class="row-fluid">
+        <div class="span4 offset1">
+            <table class="table">
+                <tr><td>
+                <span><i class="icon-book"></i></span>
+                <span><a href="{{dist.get('url', '#')}}">{{dist.Codename}}</a></span>
+                </td></tr>
+            </table>
+        </div>
+        <div class="span6">
+            <table class="table">
+                <tbody>
+                    {% for key,value in dist.items() %}
+                    <tr>
+                        <td><b>{{ key }}</b></td>
+                        <td>{{ value }}</td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+        <h3>none defined</h3>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+<head>
+    {% block head %}
+
+    <title>{% block title %}{% endblock %}/{{config.APP_NAME}}</title>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/datatables.css">
+    <script type="text/javascript" language="javascript" src="/static/js/jquery-latest.js"></script>
+    <script type="text/javascript" language="javascript" src="/static/js/bootstrap.min.js"></script>
+
+    <!-- pretty searchable/sortable/paginated package list table -->
+    <script type="text/javascript" language="javascript" src="/static/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="/static/js/packages.dataTables.js"></script>
+
+    <!-- localized modifications to the css for the app -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- localized app js -->
+    <script>
+        $(document).ready(function () {
+            // Clear active menu item from all navbar entries
+            $('.navbar li').click(function(e) {
+                if (!$this.hasClass('dropdown')) {
+                    $('.navbar li').removeClass('active');
+                }
+
+                var $this = $(this);
+                if (!$this.hasClass('active')) {
+                    if (!$this.hasClass('dropdown')) {
+                        $this.addClass('active');
+                    }
+                }
+            });
+
+            // Apply "active" class to the menu option which matches the current
+            // page.
+            var url = window.location;
+            console.log(url)
+            $('.navbar li').removeClass('active');
+            $('ul.nav a[href="'+ url.pathname +'"]').parent().addClass('active');
+
+            // move to jsblock in api/detail/package.html
+            $('#download-deb').click(function() {
+                var url = window.location;
+                window.location = url + "/download"
+            });
+        });
+    </script>
+
+    {% endblock %}
+</head>
