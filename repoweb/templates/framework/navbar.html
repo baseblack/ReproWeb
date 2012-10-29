@@ -4,8 +4,8 @@
     <a class="brand" href="/">{{config.APP_NAME}}</a>
     <ul class="nav pull-left">
       <li class="divider-vertical"></li>
-      <li><a href="/api/distributions/">Browse</a></li>
-      <li><a href="/api/packages/">Search</a></li>
+      <li><a href="{{ url_for('get_repository_detail') }}">Browse</a></li>
+      <li><a href="{{ url_for('get_packages') }}">Search</a></li>
     </ul>
 
     <ul class="nav pull-right">

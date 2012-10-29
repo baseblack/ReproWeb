@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Name: backend.py 
+# Name: backend.py
 # Description: Functions used by the web view which are not direct endpoints.
 # Date: 28th Oct 2012
 # Author: Andrew Bunday <andrew.bunday@gmail.com>
@@ -12,68 +12,115 @@ import os
 from . import app
 from flask import json
 
-import repocheep
-repository = repocheep.Repository('/mnt/tech/repositories/apt/auto-lucid')
+################################################################################
+# Repository access module. Updated at http://github.com/andrewbunday/repocheep
+
+from repocheep import Repository
+repository = Repository('/mnt/tech/repositories/apt/auto-lucid')
+
+################################################################################
+# Functions
+
+def cache(settings):
+    return PackageCache(settings.cachepath)
+
+################################################################################
+# Classes
 
 class PackageCache(object):
     """
     Cache class. Provides performance enhancement for accessing package deb info.
-                 Reprepro only provides handles to packages/versions and their 
+                 Reprepro only provides handles to packages/versions and their
                  associated codename/component/arch. It handles debs for you and
-                 does not provide an easy way to associate a deb file in the 
-                 repository with a package. 
+                 does not provide an easy way to associate a deb file in the
+                 repository with a package.
 
-                 We use `reprepro.Repository.dumpreferences()` to extract the 
+                 We use `reprepro.Repository.dumpreferences()` to extract the
                  current deb list in the repository. Then we use dpkg-deb to read
                  the deb file's package and associate the two.
 
-                 For large repositories this can get slow. Once an association has 
-                 been generated it is stored as a json file in the cache.                 
+                 For large repositories this can get slow. Once an association has
+                 been generated it is stored as a json file in the cache.
     """
 
-    def __init__(self):
-        self.cachedir = '/var/cache/repoweb'
+    def __init__(self, path):
+        self.cachedir = path
 
     def cache_path(self, codename, component, arch, package, version):
         return os.path.join(self.cachedir, repository.name, codename, component, arch, package, '%s.json' % version)
 
     def write(self, codename, component, arch, package, version, data):
-        path = self.cache_path(codename, component, arch, package, version)
+        cache_file_path = self.cache_path(codename, component, arch, package, version)
         try:
-            os.makedirs(os.path.dirname(path))
-            json.dump(data, open(path, 'w'))
-        except:
-            app.logger.warn('Unable to write cache %s to disk' % path)
+            if not os.path.exists(os.path.dirname(cache_file_path)):
+                os.makedirs(os.path.dirname(cache_file_path))
+
+            json.dump(data, open(cache_file_path, 'w'))
+        except Exception as e:
+            app.logger.warn('Unable to write cache %s to disk' % cache_file_path)
+            app.logger.warn(e)
+            raise e
 
     def read(self, codename, component, arch, package, version):
         path = self.cache_path(codename, component, arch, package, version)
-        if os.access(path, os.R_OK):
+        try:
             return json.load(open(path, 'r'))
+        except:
+            raise  # raises an exception if the cache file it wants to read cannot be.
 
-def save_settings(form):
-    """Accepts a web input form from a request. Attmpts to store the content of 
-       the form within the file specified by 'settingsfile'.
+class Settings(object):
+    """Settings used by the webapp. Provides an object which reads configuration
+       from disk and ingests it into its __dict__ making it available as attributes
+       on the object."""
 
-       Returns: dict('status': 'OK') if app was able to write out the settings 
-                file.
-                dict('status': '') if the app was not able to write out the
-                settings."""
+    loaded = False
 
-    app.logger.debug(form)
+    def __init__(self):
+        """Reads the default/environment set configuration and attempts to load
+           the specified settings file."""
+        try:
+            # attempt to read in the settings from a stored file on disk
+            self.load(app.config['APP_SETTINGSFILE'])
+            # if the attrs were set and not empty strings set the config as loaded.
+            if self.settingsfile and self.basedir:
+                self.loaded = True
 
-    try:
-        settings_dir = os.path.dirname(form['settingsfile'])
-        if not os.path.exists(settings_dir):
-            os.makedirs(settings_dir)
+        except Exception as e:
+            app.logger.debug(e)
+            self.loaded = False
 
-        # overwrite any previous settings.
-        json.dump(form, open(form['settingsfile'], 'w'))
+    def load(self, config_file):
+        """Load the settings file. Accessed via its own method to allow reloads."""
+        data = json.load(open(config_file, 'r'))
+        self.__dict__.update(data)
 
-        return {'data': form, 'status': 'OK'}
-    except Exception as e:
-        # if _anything_ goes wrong, return unsuccessfull.
+    def reload(self):
+        """Try to re-initialize ourself"""
+        self.__init__()
 
-        app.logger.debug(e)
-        return {'status': ''}
+    def save(self, form):
+        """Accepts a web input form from a request. Attmpts to store the content of
+           the form within the file specified by 'settingsfile'.
+
+           Returns: dict('status': 'OK') if app was able to write out the settings
+                    file.
+                    dict('status': '') if the app was not able to write out the
+                    settings."""
+
+        app.logger.debug(form)
+
+        try:
+            settings_dir = os.path.dirname(form['settingsfile'])
+            if not os.path.exists(settings_dir):
+                os.makedirs(settings_dir)
+
+            # overwrite any previous settings.
+            json.dump(form, open(form['settingsfile'], 'w'))
+
+            return {'data': form, 'status': 'OK'}
+        except Exception as e:
+            app.logger.debug(e)
+            return {'data': {}, 'status': 'FAIL'}
+
 
 

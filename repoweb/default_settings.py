@@ -12,9 +12,9 @@ DEBUG = False
 
 # Application Settings
 APP_NAME =  'PyReproWeb'  # Lukas
-REPO_SETTINGS_FILE = '/var/tmp/repoweb/settings.json'
-CACHE_DIR = '/var/cache/repoweb'
-REPO_BASEDIR = ''
+APP_SETTINGSFILE = '/var/tmp/repoweb/settings.json'
+APP_CACHEPATH = '/var/cache/repoweb'
+APP_BASEDIR = '/mnt/tech/repositories/apt/auto-lucid'
 
 # WSGI Settings
 SERVER_PORT = 5000

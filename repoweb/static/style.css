@@ -19,6 +19,12 @@ body {
     margin-left: 0px;
 }
 
+.link-label {
+    font-size: 20px;
+    line-height: 30px;
+    /*vertical-align: middle;*/
+}
+
 #wrap {
     min-height: 100%;
     height: auto !important;

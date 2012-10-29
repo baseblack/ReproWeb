@@ -11,39 +11,6 @@
         </div>
     </div>
 
-    {% if reference is defined %}
-    <div class="row-fluid">
-        <div class="span10 offset1">
-            <table class="table">
-                <tr>
-                    <td><b>Package</b></td><td>{{ reference.get('package') }}</td>
-                </tr>
-                <tr>
-                    <td><b>Version</b></td><td>{{ reference['version'] }}</td>
-                </tr>
-                <tr>
-                    <td><b>Codename</b></td><td>{{ reference['codename'] }}</td>
-                </tr>
-                <tr>
-                    <td><b>Component</b></td><td>{{ reference['component'] }}</td>
-                </tr>
-                <tr>
-                    <td><b>Architecture</b></td><td>{{ reference['arch'] }}</td>
-                </tr>
-                <tr>
-                    <td><b>Description</b></td><td>{{ reference['package'] }}</td>
-                </tr>
-                <tr>
-                    <td><b>File</b></td>
-                    <td>
-                        <span><i class="icon-download"></i></span>
-                        <span><a href='/api/{{reference.codename}}/{{reference.component}}/{{reference.arch}}/{{reference.package}}/{{reference.version}}/download'>{{ reference['deb'] }}</a></span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
     <div class="row-fluid">
         <div class="span10 offset1">
             <h3>All Versions:</h3>
@@ -57,18 +24,12 @@
                 <tr>
                     <td>
                         <span><i class="icon-tag"></i></span>
-                        <span><a href='{{version.url}}'>{{version.version}}</a></span>
+                        <span class="link-label"><a href='{{request.path}}{{version.version}}'>{{version.version}}</a></span>
                     </td>
                 </tr>
             {% endfor %}
             </table>
         </div>
     </div>
-
-    {% else %}
-        <div class="span12">
-            <h3>not found</h3>
-        </div>
-    {% endif %}
 
 {% endblock %}
