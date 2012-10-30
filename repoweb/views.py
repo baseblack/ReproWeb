@@ -21,7 +21,7 @@ from flask import g
 
 # Application setup/configuration etc.
 from . import app
-from backend import cache, Settings, repository
+from backend import cache, Settings, Repository
 
 settings = Settings()
 
@@ -42,12 +42,12 @@ def get_settings():
         * If a POST request is made, then the content of the request' form is
           loaded into the settings and saved to disk."""
 
-    g.breadcrumb = [ {'name': 'settings', 'url': url_for('get_settings')}, ]
-
     if request.method == 'POST':
         return json.dumps(settings.save(request.form))
 
     if request.method == 'GET':
+        g.breadcrumb = [ {'name': 'settings', 'url': url_for('get_settings')}, ]
+
         settings.reload()
         g.settings = settings
         return render_template('settings.html')
@@ -67,7 +67,12 @@ def get_packages():
     """Render a view listing _all_ of the packages within the repository."""
     g.breadcrumb = [ {'name': 'search', 'url': request.path}, ]
 
-    package_list = repository.list('auto-lucid')
+    repository = Repository(settings.basedir)
+
+    package_list = []
+    for dist in repository.list_dists():
+        package_list.extend(repository.list(dist['Codename']))
+
     for package in package_list:
         package['url'] = url_for('get_package_detail', codename = package.get('codename'),
                                                        component = package.get('component'),
@@ -82,6 +87,7 @@ def get_repository_detail():
     """Render a view listing all of the distributions configured in the repository"""
     g.breadcrumb = [ {'name': 'browse', 'url': url_for('get_repository_detail')}, ]
 
+    repository = Repository(settings.basedir)
     codenames = repository.list_dists()
     for codename in codenames:
         codename['url'] = url_for('get_codename_detail', codename=codename.get('Codename','#'))
@@ -94,6 +100,7 @@ def get_codename_detail(codename):
     g.breadcrumb = [{'name': 'browse', 'url': url_for('get_repository_detail')},
                     {'name': codename, 'url': request.path},]
 
+    repository = Repository(settings.basedir)
     components = repository.list_components(codename)
     if components:
         for c in components:
@@ -109,6 +116,7 @@ def get_component_detail(codename, component):
                     {'name': codename, 'url': url_for('get_codename_detail', codename=codename)},
                     {'name': component, 'url': request.path},]
 
+    repository = Repository(settings.basedir)
     archs = repository.list_architectures(codename)
     if archs:
         for a in archs:
@@ -127,6 +135,7 @@ def get_architecture_detail(codename, component, architecture):
 
     # setup filters on component/architecture, str() cast is required for
     # subprocess. unicode is unsupported.
+    repository = Repository(settings.basedir)
     repository.options.components = [str(component)]
     repository.options.architectures = [str(architecture)]
     package_list = repository.list(str(codename))
@@ -156,6 +165,7 @@ def get_package_versions(codename, component, architecture, package):
                     {'name': package, 'url': request.path},]
 
     # get any un-referenced versions of our package name
+    repository = Repository(settings.basedir)
     all_versions = repository.list(codename, package)
     return render_template('api/detail/package.html', package=package, versions=all_versions)
 
@@ -170,21 +180,23 @@ def get_package_detail(codename, component, architecture, package, version, form
                     {'name': version, 'url': request.path},]
 
     # get any un-referenced versions of our package name
+    repository = Repository(settings.basedir)
     all_versions = repository.list(codename, package)
 
     try:
-        reference = cache(settings).read(codename, component, architecture, package, version)
+        reference = cache(settings).read(repository, codename, component, architecture, package, version)
         app.logger.debug('Rendering from cache')
-    except:
+    except Exception as e:
         # loop through the references until we find a match. Cache it out afterwards
         # so that we don't have to do this again.
+        app.logger.debug(e)
         app.logger.debug('Exception caught, loading from repository')
         for ref in repository.dumpreferences():
             if ref['package'] == package and ref['version'] == version:
                 ref['deb'] = os.path.join(repository.options.basedir, ref['deb'])
 
                 try:
-                    cache(settings).write(codename, component, architecture, package, ref['version'], ref)
+                    cache(settings).write(repository, codename, component, architecture, package, ref['version'], ref)
                     reference = ref
                 except Exception as e:
                     # unable to cache result. reference local variable will not have been set.
@@ -201,4 +213,15 @@ def download_deb(**kwargs):
     ref = cache(settings).read(kwargs['codename'], kwargs['component'], kwargs['architecture'], kwargs['package'], kwargs['version'])
     return send_file(ref['deb'], as_attachment=True)
 
+@app.route('/api/packages/preload')
+def precache_package_detail():
+    repository = Repository(settings.basedir)
+    for ref in repository.dumpreferences():
+        try:
+            ref['deb'] = os.path.join(repository.options.basedir, ref['deb'])
+            cache(settings).write(repository, ref['codename'], ref['component'], ref['arch'], ref['package'], ref['version'], ref)
+        except:
+            app.logger.warn('unable to write cache for %s %s' % (ref['package'], ref['version']))
+
+    return json.dumps({'status': 'OK'})
 

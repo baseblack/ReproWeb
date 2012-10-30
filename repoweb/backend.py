@@ -14,9 +14,17 @@ from flask import json
 
 ################################################################################
 # Repository access module. Updated at http://github.com/andrewbunday/repocheep
+#
+# repocheep can be replaced by any library you like. requirements are:
+#
+# * the library must provide a Repository class on which to perform actions.
+# * any replacement must return lists of dictionaries containing the contents of
+#   an action.
+# * actions should be in the form Repository.<Action> ie, repository.dumpreferences()
+# * options such as `-C`, `-T`, or `-A` are set on the repository
+#   as respository.options.X
 
 from repocheep import Repository
-repository = Repository('/mnt/tech/repositories/apt/auto-lucid')
 
 ################################################################################
 # Functions
@@ -46,11 +54,11 @@ class PackageCache(object):
     def __init__(self, path):
         self.cachedir = path
 
-    def cache_path(self, codename, component, arch, package, version):
+    def cache_path(self, repository, codename, component, arch, package, version):
         return os.path.join(self.cachedir, repository.name, codename, component, arch, package, '%s.json' % version)
 
-    def write(self, codename, component, arch, package, version, data):
-        cache_file_path = self.cache_path(codename, component, arch, package, version)
+    def write(self, repository, codename, component, arch, package, version, data):
+        cache_file_path = self.cache_path(repository, codename, component, arch, package, version)
         try:
             if not os.path.exists(os.path.dirname(cache_file_path)):
                 os.makedirs(os.path.dirname(cache_file_path))
@@ -61,8 +69,8 @@ class PackageCache(object):
             app.logger.warn(e)
             raise e
 
-    def read(self, codename, component, arch, package, version):
-        path = self.cache_path(codename, component, arch, package, version)
+    def read(self, repository, codename, component, arch, package, version):
+        path = self.cache_path(repository, codename, component, arch, package, version)
         try:
             return json.load(open(path, 'r'))
         except:
@@ -96,7 +104,10 @@ class Settings(object):
 
     def reload(self):
         """Try to re-initialize ourself"""
-        self.__init__()
+        try:
+            self.load(self.settingsfile)
+        except:
+            self.loaded = False
 
     def save(self, form):
         """Accepts a web input form from a request. Attmpts to store the content of
@@ -116,11 +127,17 @@ class Settings(object):
 
             # overwrite any previous settings.
             json.dump(form, open(form['settingsfile'], 'w'))
-
-            return {'data': form, 'status': 'OK'}
         except Exception as e:
             app.logger.debug(e)
-            return {'data': {}, 'status': 'FAIL'}
+            return {'data': {}, 'status': 'WRITE_FAIL'}
 
+        try:
+            # try to apply the settings back onto self.
+            self.load(form['settingsfile'])
+        except:
+            return {'data': {}, 'status': 'LOAD_FAIL'}
+
+        # all is good, return OK
+        return {'data': form, 'status': 'OK'}
 
 
