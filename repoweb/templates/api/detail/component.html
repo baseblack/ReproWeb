@@ -13,16 +13,23 @@
 
     {% if archs is defined %}
     <div class="row-fluid">
-        <div class="span6 offset1">
+        <div class="span10 offset1">
             <table class="table">
-                {% for arch in archs %}
-                <tr>
-                    <td>
-                        <span><i class="icon-briefcase"></i></span>
-                        <span class="link-label"><a href="{{arch.url}}">{{arch.architecture}}</a></span>
-                    </td>
-                </tr>
-                {% endfor %}
+                <thead>
+                    <th></th>
+                    <th style="width: 15%">Count</th>
+                </thead>
+                <tbody>
+                    {% for arch in archs %}
+                    <tr>
+                        <td>
+                            <span><i class="icon-briefcase"></i></span>
+                            <span class="link-label"><a href="{{arch.url}}">{{arch.architecture}}</a></span>
+                        </td>
+                        <td>{{arch.count}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

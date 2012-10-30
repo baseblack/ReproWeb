@@ -8,6 +8,9 @@
 ################################################################################
 
 import os
+import pwd
+import stat
+import time
 from functools import wraps
 
 # Application framework imports
@@ -16,6 +19,7 @@ from flask import send_file
 from flask import redirect
 from flask import url_for
 from flask import request
+from flask import Response
 from flask import json
 from flask import g
 
@@ -89,9 +93,14 @@ def get_repository_detail():
 
     repository = Repository(settings.basedir)
     codenames = repository.list_dists()
-    for codename in codenames:
-        codename['url'] = url_for('get_codename_detail', codename=codename.get('Codename','#'))
 
+    packages = []
+    for dist in repository.list_dists():
+        packages.extend(repository.list(dist['Codename']))
+
+    for codename in codenames:
+        codename['Url'] = url_for('get_codename_detail', codename=codename.get('Codename','#'))
+        codename['Package Count'] = len([x for x in packages])
     return render_template('api/detail/repository.html', codenames=codenames)
 
 @app.route('/api/<codename>/')
@@ -102,9 +111,11 @@ def get_codename_detail(codename):
 
     repository = Repository(settings.basedir)
     components = repository.list_components(codename)
+    packages = repository.list(codename)
     if components:
         for c in components:
             c['url'] = url_for('get_component_detail', codename=codename, component=c['component'])
+            c['count'] = len( [x for x in packages if x['component'] == c['component']] )
         return render_template('api/detail/codename.html', codename=codename, components=components)
 
     return render_template('api/detail/codename.html', codename=codename)
@@ -118,9 +129,11 @@ def get_component_detail(codename, component):
 
     repository = Repository(settings.basedir)
     archs = repository.list_architectures(codename)
+    packages = repository.list(codename)
     if archs:
         for a in archs:
             a['url'] = url_for('get_architecture_detail', codename=codename, component=component, architecture=a['architecture'])
+            a['count'] = len( [x for x in packages if x['component'] == component and x['architecture'] == a['architecture'] ] )
         return render_template('api/detail/component.html', codename=codename, component=component, archs=archs)
 
     return render_template('api/detail/component.html', codename=codename, component=component)
@@ -167,6 +180,7 @@ def get_package_versions(codename, component, architecture, package):
     # get any un-referenced versions of our package name
     repository = Repository(settings.basedir)
     all_versions = repository.list(codename, package)
+    print all_versions
     return render_template('api/detail/package.html', package=package, versions=all_versions)
 
 @app.route('/api/<codename>/<component>/<architecture>/<package>/<version>')
@@ -196,6 +210,12 @@ def get_package_detail(codename, component, architecture, package, version, form
                 ref['deb'] = os.path.join(repository.options.basedir, ref['deb'])
 
                 try:
+                    (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ref['deb'])
+                    ref['stats'] = {'mtime': time.ctime(mtime), 'ctime': time.ctime(ctime), 'user': pwd.getpwuid(uid).pw_gecos, 'size': size}
+                except Exception as e:
+                    app.logger.warn(e)
+
+                try:
                     cache(settings).write(repository, codename, component, architecture, package, ref['version'], ref)
                     reference = ref
                 except Exception as e:
@@ -210,18 +230,27 @@ def get_package_detail(codename, component, architecture, package, version, form
 @app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/download')
 def download_deb(**kwargs):
     app.logger.debug(kwargs)
-    ref = cache(settings).read(kwargs['codename'], kwargs['component'], kwargs['architecture'], kwargs['package'], kwargs['version'])
+    repository = Repository(settings.basedir)
+    ref = cache(settings).read(repository, kwargs['codename'], kwargs['component'], kwargs['architecture'], kwargs['package'], kwargs['version'])
     return send_file(ref['deb'], as_attachment=True)
 
 @app.route('/api/packages/preload')
 def precache_package_detail():
-    repository = Repository(settings.basedir)
-    for ref in repository.dumpreferences():
-        try:
+
+    def generate():
+        yield 'running...\t'
+
+        repository = Repository(settings.basedir)
+        for ref in repository.dumpreferences():
             ref['deb'] = os.path.join(repository.options.basedir, ref['deb'])
-            cache(settings).write(repository, ref['codename'], ref['component'], ref['arch'], ref['package'], ref['version'], ref)
-        except:
-            app.logger.warn('unable to write cache for %s %s' % (ref['package'], ref['version']))
+            try:
+                (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ref['deb'])
+                ref['stats'] = {'mtime': time.ctime(mtime), 'ctime': time.ctime(ctime), 'user': pwd.getpwuid(uid).pw_gecos, 'size': size}
+                cache(settings).write(repository, ref['codename'], ref['component'], ref['arch'], ref['package'], ref['version'], ref)
+            except Exception as e:
+                app.logger.warn(e)
+                app.logger.warn('unable to write cache for %s %s' % (ref['package'], ref['version']))
 
-    return json.dumps({'status': 'OK'})
+        yield json.dumps({'status': 'OK'})
 
+    return Response(generate())

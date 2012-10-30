@@ -13,22 +13,29 @@
 
     {% if components is defined %}
     <div class="row-fluid">
-        <div class="span6 offset1">
+        <div class="span10 offset1">
             <table class="table">
-                {% for comp in components %}
-                <tr>
-                    <td>
-                        <span><i class="icon-th-list"></i></span>
-                        <span class="link-label"><a href="{{comp.url}}">{{comp.component}}</a></span>
-                    </td>
-                </tr>
-                {% endfor %}
+                <thead>
+                    <th></th>
+                    <th style="width: 15%">Count</th>
+                </thead>
+                <tbody>
+                    {% for comp in components %}
+                    <tr>
+                        <td>
+                            <span><i class="icon-th-list"></i></span>
+                            <span class="link-label"><a href="{{comp.url}}">{{comp.component}}</a></span>
+                        </td>
+                        <td>{{comp.count}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
 
     {% else %}
-        <div>none defined</div>
+    <div>none defined</div>
     {% endif %}
 {% endblock %}
 

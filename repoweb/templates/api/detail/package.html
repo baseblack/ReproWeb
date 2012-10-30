@@ -7,7 +7,7 @@
 
     <div class="row-fluid">
         <div class="span10 offset1">
-            <h1>Package: {{package}}</h1>
+            <h1>{{package}}</h1>
         </div>
     </div>
 
@@ -24,7 +24,7 @@
                 <tr>
                     <td>
                         <span><i class="icon-tag"></i></span>
-                        <span class="link-label"><a href='{{request.path}}{{version.version}}'>{{version.version}}</a></span>
+                        <span class="link-label"><a href='/api/{{version.codename}}/{{version.component}}/{{version.architecture}}/{{version.package}}/{{version.version}}'>{{version.component}}/{{version.version}}</a></span>
                     </td>
                 </tr>
             {% endfor %}
