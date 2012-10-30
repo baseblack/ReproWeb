@@ -11,7 +11,7 @@
 DEBUG = False
 
 # Application Settings
-APP_NAME =  'PyReproWeb'  # Lukas
+APP_NAME =  'ReproWeb'  # Lukas
 APP_SETTINGSFILE = '/var/tmp/repoweb/settings.json'
 APP_CACHEPATH = '/var/cache/repoweb'
 APP_BASEDIR = '/mnt/tech/repositories/apt/auto-lucid'
