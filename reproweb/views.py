@@ -39,7 +39,7 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/settings', methods=['GET', 'POST'])
+@app.route('/settings/', methods=['GET', 'POST'])
 def get_settings():
     """Settings view.
         * If a GET request is made the settings page is returned.
@@ -56,12 +56,12 @@ def get_settings():
         g.settings = settings
         return render_template('settings.html')
 
-@app.route('/about')
+@app.route('/about/')
 def get_about():
     g.breadcrumb = [ {'name': 'about', 'url': url_for('get_about')}, ]
     return render_template('about.html')
 
-@app.route('/help')
+@app.route('/help/')
 def get_help():
     g.breadcrumb = [ {'name': 'help', 'url': url_for('get_help')}, ]
     return render_template('help.html')
@@ -183,7 +183,7 @@ def get_package_versions(codename, component, architecture, package):
     print all_versions
     return render_template('api/detail/package.html', package=package, versions=all_versions)
 
-@app.route('/api/<codename>/<component>/<architecture>/<package>/<version>')
+@app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/')
 @app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/<format>')
 def get_package_detail(codename, component, architecture, package, version, format=None):
     g.breadcrumb = [{'name': 'browse', 'url': url_for('get_repository_detail')},
@@ -204,7 +204,6 @@ def get_package_detail(codename, component, architecture, package, version, form
         # loop through the references until we find a match. Cache it out afterwards
         # so that we don't have to do this again.
         app.logger.debug(e)
-        app.logger.debug('Exception caught, loading from repository')
         for ref in repository.dumpreferences():
             if ref['package'] == package and ref['version'] == version:
                 ref['deb'] = os.path.join(repository.options.basedir, ref['deb'])
@@ -220,12 +219,30 @@ def get_package_detail(codename, component, architecture, package, version, form
                     reference = ref
                 except Exception as e:
                     # unable to cache result. reference local variable will not have been set.
+                    app.logger.warn('unable to cache')
                     app.logger.warn(e)
 
     if 'reference' in locals():
         return render_template('api/detail/version.html', package=package, reference=reference, versions=all_versions)
 
     return render_template('api/detail/version.html', package=package)
+
+@app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/changelog')
+def get_package_changelog(codename, component, architecture, package, version):
+    repository = Repository(settings.basedir)
+    try:
+        reference = cache(settings).read(repository, codename, component, architecture, package, version)
+    except:
+        for ref in repository.dumpreferences():
+            if ref['package'] == package and ref['version'] == version:
+                reference = ref
+
+    if 'reference' in locals():
+        reference['deb'] = os.path.join(repository.options.basedir, reference['deb'])
+        return json.dumps(repository.list_changes(reference['deb']))
+
+    return json.dumps([])
+
 
 @app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/download')
 def download_deb(**kwargs):

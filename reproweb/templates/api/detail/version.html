@@ -5,6 +5,35 @@
 {% endblock %}
 {% block content %}
 
+    <script>
+        function nl2br (str, is_xhtml) {
+            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+            var nstr = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+            return (nstr + '').replace(/([^\-]?)(\-|\-|\-|\-)/g, '$1'+ '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp' +'$2');
+        };
+
+        $(document).ready(function () {
+            var url = window.location;
+            changelogUrl = url + "/changelog"
+            $.ajax({
+                type: "GET",
+                url: changelogUrl,
+                datatype: 'json',
+                success: function(data) {
+                    response = eval("(" + data + ")");
+                    console.log(response)
+                    if (response.length >= 1){
+                        $.each(response, function(i, l){
+                            $('#changelogTable > tbody:last').append(
+                                '<tr><td></td><td>'+nl2br(l, false)+'</td>'
+                            );
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
     <div class="row-fluid">
         <div class="span10 offset1">
             <h1>{{package}}</h1>
@@ -105,6 +134,25 @@
         </div>
     </div>
 
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h3>Changelog:</h3>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <table id="changelogTable" class="table">
+                <thead>
+                    <th style="width: 15%"></th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     {% else %}
         <div class="span12">
             <h3>not found</h3>
@@ -112,3 +160,5 @@
     {% endif %}
 
 {% endblock %}
+
+

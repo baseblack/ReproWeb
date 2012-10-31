@@ -89,9 +89,6 @@ class Settings(object):
         try:
             # attempt to read in the settings from a stored file on disk
             self.load(app.config['APP_SETTINGSFILE'])
-            # if the attrs were set and not empty strings set the config as loaded.
-            if self.settingsfile and self.basedir:
-                self.loaded = True
 
         except Exception as e:
             app.logger.debug(e)
@@ -101,6 +98,10 @@ class Settings(object):
         """Load the settings file. Accessed via its own method to allow reloads."""
         data = json.load(open(config_file, 'r'))
         self.__dict__.update(data)
+
+        # if the attrs were set and not empty strings set the config as loaded.
+        if self.settingsfile and self.basedir:
+            self.loaded = True
 
     def reload(self):
         """Try to re-initialize ourself"""
