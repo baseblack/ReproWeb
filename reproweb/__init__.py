@@ -21,8 +21,8 @@ app = Flask(__name__)
 # the environment.
 app.config.from_object('reproweb.default_settings')
 
-if os.getenv('PYREPROWEB_SETTINGS'):
-    app.config.from_envvar('PYREPROWEB_SETTINGS')
+if os.getenv('REPROWEB_SETTINGS'):
+    app.config.from_envvar('REPROWEB_SETTINGS')
 
 # PyReproWeb endpoints
 import views

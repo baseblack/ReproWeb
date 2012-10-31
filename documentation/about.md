@@ -1,5 +1,3 @@
-# ReproWeb <small>a _micro_ repository browser</small>
-
 ## Background
 
 At Baseblack we manage how we install and update the software and tools on our workstations, rendernodes and servers (physical+virtual) using a combination of [Apt](http://wiki.debian.org/Apt) _(which handles software installation, versioning and file collisions)_ and [Puppet](http://puppetlabs.com) _(which handles configuration and selection of packages for apt to install)_.
@@ -50,13 +48,3 @@ Using our background research and our production requirements we decided to try 
 app ourselves. We gave ourselves 7 days and Lukas is the product.
 
 **_Lukas is a pet name used for the project and does not reflect any real persona._**
-
-
-
-
-### Repository Browser
-
-
-
-
-### Package Listing

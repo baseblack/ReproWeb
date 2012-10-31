@@ -264,6 +264,8 @@ def precache_package_detail():
                 (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ref['deb'])
                 ref['stats'] = {'mtime': time.ctime(mtime), 'ctime': time.ctime(ctime), 'user': pwd.getpwuid(uid).pw_gecos, 'size': size}
                 cache(settings).write(repository, ref['codename'], ref['component'], ref['arch'], ref['package'], ref['version'], ref)
+                yield "</br>"
+                yield json.dumps(ref)
             except Exception as e:
                 app.logger.warn(e)
                 app.logger.warn('unable to write cache for %s %s' % (ref['package'], ref['version']))

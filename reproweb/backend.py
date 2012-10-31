@@ -67,7 +67,7 @@ class PackageCache(object):
         except Exception as e:
             app.logger.warn('Unable to write cache %s to disk' % cache_file_path)
             app.logger.warn(e)
-            raise e
+            raise
 
     def read(self, repository, codename, component, arch, package, version):
         path = self.cache_path(repository, codename, component, arch, package, version)

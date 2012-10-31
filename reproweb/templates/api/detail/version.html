@@ -6,6 +6,13 @@
 {% block content %}
 
     <script>
+        function stripTrailingSlash(str) {
+            if(str.substr(-1) == '/') {
+                return str.substr(0, str.length - 1);
+            }
+            return str;
+        }
+
         function nl2br (str, is_xhtml) {
             var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
             var nstr = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
@@ -14,7 +21,7 @@
 
         $(document).ready(function () {
             var url = window.location;
-            changelogUrl = url + "/changelog"
+            changelogUrl = stripTrailingSlash(url.href) + "/changelog"
             $.ajax({
                 type: "GET",
                 url: changelogUrl,
