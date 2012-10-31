@@ -11,7 +11,7 @@ import os
 
 __version__ = "1.0.0"
 __author__ = "andrew.bunday@gmail.com"
-__website__ = "pyrepoweb.github.com"
+__website__ = "reproweb.github.com"
 
 # Initialze webapp
 from flask import Flask
@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 # Read default settings and attempt to pick up settings overrides from 
 # the environment.
-app.config.from_object('repoweb.default_settings')
+app.config.from_object('reproweb.default_settings')
 
 if os.getenv('PYREPROWEB_SETTINGS'):
     app.config.from_envvar('PYREPROWEB_SETTINGS')

@@ -106,7 +106,8 @@ class Settings(object):
         """Try to re-initialize ourself"""
         try:
             self.load(self.settingsfile)
-        except:
+        except Exception as e:
+            app.logger.debug(e)
             self.loaded = False
 
     def save(self, form):

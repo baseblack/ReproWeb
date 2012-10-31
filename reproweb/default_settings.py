@@ -12,8 +12,8 @@ DEBUG = False
 
 # Application Settings
 APP_NAME =  'ReproWeb'  # Lukas
-APP_SETTINGSFILE = '/var/tmp/repoweb/settings.json'
-APP_CACHEPATH = '/var/cache/repoweb'
+APP_SETTINGSFILE = '/var/tmp/reproweb/settings.json'
+APP_CACHEPATH = '/var/cache/reproweb'
 APP_BASEDIR = '/mnt/tech/repositories/apt/auto-lucid'
 
 # WSGI Settings
