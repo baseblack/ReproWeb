@@ -1,62 +1,37 @@
 # ReproWeb <small>a _micro_ repository browser</small>
 
-## Background
+## Getting Started
 
-At Baseblack we manage how we install and update the software and tools on our workstations, rendernodes and servers (physical+virtual) using a combination of [Apt](http://wiki.debian.org/Apt) _(which handles software installation, versioning and file collisions)_ and [Puppet](http://puppetlabs.com) _(which handles configuration and selection of packages for apt to install)_.
+Reproweb is designed to provide insight into your self hosted apt repository. It is built on top of the standard debian dpkg toolchain and the repository builder/mirroror [reprepro](http://mirrorer.alioth.debian.org/).
 
-Our primary apt repository now has around 450 packages origanized into a number of distributions, components and architectures. And as with any repository that number is ever increasing.
+If any packages are taking a long time to load go the __COG__ icon and select the __'Reload Cache'__ menu option.
 
-As we add more distributions into the primary repository, merge repositories together and start auto-generating packages off of code commits, that number begins to become frighteningly large.
 
-We needed to find something to help us view/manage our repository.
+### Browse
 
-### Alternatives
+> Do you find yourself wanting to know more about your repository? Perhaps how many packages are in a particular component? or perhaps you don't know the structure of your repository and you want to get to know it more intimately?
 
-In the interests of due diligence we looked at the currently available solutions for handling apt repositories.
+For you there is the [browser](/api/repository/) view. This view allows you to descend through a repository,  following each branch and leaf. 
 
-1.  [packages.debian.org](http://packages.debian.org)
-    
-    After checking out the source for the pretty fantastic offical debian repository 
-    browser site we decided against using it.
+<center>![](./images/image_07.png)</center>
 
-    This came down to a few factors. The primary one is that it's written in bash/perl 
-    neither of which we were too keen on having to edit to add any additional features 
-    we might want in the future.
+The structure will typicially lead you to a filtered packages view only displaying the packages which match the distribution, component and architecture you have selected.
 
-    Secondary is the static generation of the site. We wanted to have real-time access 
-    into the repository, without the need for cronjobs and offline processing.
+<center>![](./images/image_08.png)</center>
 
-1.  [RepoDepo](http://sourceforge.net/projects/repodepo/)
+And don't worry about keeping track of where the package or version you have found is currently residing. The menu at the top of the window will always keep track of your current position for you.
 
-    This is a webapp which makes it fairly easy to ingest from one repository into another.
-    Using a waterfall method you can use it to move packages from testing -> production
-    through a series of stages. 
+### Search
 
-    Again we chose not to persue it, primarily due to the general pain levels involved in
-    anything PHP related.
+> Do you have a specific package you are looking for? Do you know it's name or version and don't want to have to go browsing around for it?
 
-1.  [Repoman](https://github.com/synack/repoman) 
+If this is you, then select [Search](/api/packages/) in the menu. This will load the package view. Here all of the packages for all of the distributions, components and architectures in the repository are listed. 
 
-    Repoman provides a RESTful client/server interface for managing Debian repositories and 
-    building packages. Which is great, but still fairly limited in scope, and didn't provide
-    us with a gui. 
+<center>![](./images/image_05.png)</center>
 
-    Since this was something which we would need to write ourselves, we chose not to go with
-    repoman.
+The list is pagenated, sortable and searchable. To find the package you are looking for type part of its name into the search box. The package list will be filtered down to only show matching packages.
 
-## Enter Lukas
-
-Using our background research and our production requirements we decided to try and build a web
-app ourselves. We gave ourselves 7 days and Lukas is the product.
-
-**_Lukas is a pet name used for the project and does not reflect any real persona._**
+<center>![](./images/image_06.png)</center>
 
 
 
-
-### Repository Browser
-
-
-
-
-### Package Listing

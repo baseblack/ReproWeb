@@ -25,10 +25,11 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/settings",
+                    url: "/settings/",
                     datatype: 'json',
                     data: dataString,
                     success: function(data) {
+                        console.log(data)
                         response = eval("(" + data + ")");
                         console.log(response)
                         if (response.status == 'OK'){
@@ -68,9 +69,9 @@
             <form class="form-horizontal">
                 <fieldset><legend>Browser</legend>
                 <div class="control-group">
-                        <label class="control-label" for="inputSettings">Settings File</label>
+                        <label class="control-label" for="inputSettings"><i class="icon-star"></i> Settings File</label>
                         <div class="controls">
-                            <input class="input-xxlarge" type="text" id="inputSettings" placeholder="{{config.APP_SETTINGSFILE}}" value="{{g.settings.settingsfile}}">
+                            <input required="required" class="input-xxlarge" type="text" id="inputSettings" placeholder="{{config.APP_SETTINGSFILE}}" value="{{g.settings.settingsfile}}">
                         </div>
                 </div>
                 <div class="control-group">
@@ -83,9 +84,9 @@
 
                 <fieldset><legend>Reprepro</legend>
                 <div class="control-group">
-                        <label class="control-label" for="inputBasedir">Base Directory</label>
+                        <label class="control-label" for="inputBasedir"><i class="icon-star"></i> Base Directory</label>
                         <div class="controls">
-                            <input class="input-xxlarge" type="text" id="inputBasedir" placeholder="{{config.APP_BASEDIR}}" value="{{g.settings.basedir}}">
+                            <input required="required" class="input-xxlarge" type="text" id="inputBasedir" placeholder="{{config.APP_BASEDIR}}" value="{{g.settings.basedir}}">
                         </div>
                 </div>
                 <div class="control-group">

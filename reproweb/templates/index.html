@@ -11,19 +11,57 @@
     <div class="row-fluid">
         <div class="span10 offset1">
             <div class="hero-unit">
-                <h1>{{self.title()}} <small>a <em>micro</em> repository browser</small></h1>
+                <h1>ReproWeb <small>a <em>micro</em> repository browser</small></h1>
 
-                <h2>Getting started:</h2>
-                    <ul class="unstyled">
-                        <li><h3>Requirements</h3></li>
-                            <ul>
-                                <p class="text-info" >This browser requires the debian apt repository tool/mirrorer <a id="reprepro" href="#" rel="tooltip" title="first tooltip">reprepro</a>.<br>
-                                ... and some common sense. </p>
-                            </ul>
-                        <li>Repository Browser</li>
-                        <li>Package Listing</li>
-                    </ul>
+                <h2>Getting Started</h2>
+
+                <p>Reproweb is designed to provide insight into your self hosted apt repository. It is built on top of the standard debian dpkg toolchain and the repository builder/mirroror <a href="http://mirrorer.alioth.debian.org/">reprepro <i class="icon-share-alt"></i></a>.</p>
+                <p>If any packages are taking a long time to load go the <strong>cog</strong> icon <i class="icon-cog"></i> and select the <strong>'Reload Cache'</strong> menu option.</p>
+
+                <div class="span5 offset1">
+                    <button class="btn btn-primary btn-large btn-block" onclick="window.location.href='#browse'">Browse</button>
+                </div>
+                <div class="span5">
+                    <button class="btn btn-large btn-block" onclick="window.location.href='#search'">Search</button>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h2 id="browse">Browse</h2>
+            <blockquote>
+                <p>Do you find yourself wanting to know more about your repository? Perhaps how many packages are in a particular component? or perhaps you don't know the structure of your repository and you want to get to know it more intimately?</p>
+            </blockquote>
+
+            <p>For you there is the <a href="/api/repository/">browser <i class="icon-share-alt"></i></a> view. This view allows you to descend through a repository,  following each branch and leaf. </p>
+            </br>
+            <p><center><img class="img-polaroid" alt="" src="./static/img/docs/image_07.png"></center></p>
+            </br>
+            <p>The structure will typicially lead you to a filtered packages view only displaying the packages which match the distribution, component and architecture you have selected.</p>
+            </br>
+            <p><center><img class="img-polaroid" alt="" src="./static/img/docs/image_08.png"></center></p>
+            </br>
+            <p>And don't worry about keeping track of where the package or version you have found is currently residing. The menu at the top of the window will always keep track of your current position for you.</p>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <h2 id="search">Search</h2>
+            <blockquote>
+                <p>Do you have a specific package you are looking for? Do you know it's name or version and don't want to have to go browsing around for it?</p>
+            </blockquote>
+
+            <p>If this is you, then select <a href="/api/packages/">Search <i class="icon-share-alt"></i></a> in the menu. This will load the package view. Here all of the packages for all of the distributions, components and architectures in the repository are listed. </p>
+            </br>
+            <p><center><img class="img-polaroid" alt="" src="./static/img/docs/image_05.png"></center></p>
+            </br>
+            <p>The list is pagenated, sortable and searchable. To find the package you are looking for type part of its name into the search box. The package list will be filtered down to only show matching packages.</p>
+            </br>
+            <p><center><img class="img-polaroid" alt="" src="./static/img/docs/image_06.png"></center></p>
+            </br>
         </div>
     </div>
 {% endblock %}
