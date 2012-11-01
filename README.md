@@ -8,11 +8,11 @@
 
 For you there is the [browser](/api/repository/) view. This view allows you to descend through a repository,  following each branch and leaf.
 
-<center>![](./images/image_07.png)</center>
+<center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_07.png)</center>
 
 The structure will typicially lead you to a filtered packages view only displaying the packages which match the distribution, component and architecture you have selected.
 
-<center>![](./images/image_08.png)</center>
+<center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_08.png)</center>
 
 And don't worry about keeping track of where the package or version you have found is currently residing. The menu at the top of the window will always keep track of your current position for you.
 
@@ -22,11 +22,11 @@ And don't worry about keeping track of where the package or version you have fou
 
 If this is you, then select [Search](/api/packages/) in the menu. This will load the package view. Here all of the packages for all of the distributions, components and architectures in the repository are listed.
 
-<center>![](./images/image_05.png)</center>
+<center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_05.png)</center>
 
 The list is pagenated, sortable and searchable. To find the package you are looking for type part of its name into the search box. The package list will be filtered down to only show matching packages.
 
-<center>![](./images/image_06.png)</center>
+<center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_06.png)</center>
 
 ## Upcoming
 
@@ -124,7 +124,7 @@ This app was developed on Ubuntu 10.04 and required several python packages whic
 
 1.    Open up a web browser navigating to the localhost, or whatever server you are using.
 
-       <center>![](./images/image_01.png)</center>
+       <center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_01.png)</center>
 
 1.    When the app runs for the first time it will try to load its settings from disk.
       The settings are saved in a json file which holds a serialized version of the
@@ -134,7 +134,7 @@ This app was developed on Ubuntu 10.04 and required several python packages whic
       If the app cannot load the settings, because the file doesn't exist it will redirect
       straight to the settings page __http://localhost:5000/settings__:
 
-      <center>![](./images/image_02.png)</center>
+      <center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_02.png)</center>
 
       The input fields marked with stars are required for the app to run. If the settings
       file is not set you will keep being redirect to the settings page and if the Base
@@ -144,7 +144,7 @@ This app was developed on Ubuntu 10.04 and required several python packages whic
 1.    Click on the Save button and if the settings have been stored a green success
       message will be displayed.
 
-      <center>![](./images/image_03.png)</center>
+      <center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_03.png)</center>
 
 1.    Now you can navigate to any of the other pages in the app. I suggest heading to the
       front page where a welcome message and a few useful links are listed out for you.
@@ -161,6 +161,6 @@ you can trigger the app to try and cache all of its apps in one go.
 Either make a request to the url: `http://localhost:5000/api/packages/preload` or click on
 the menu option 'Reload Cache' under the cog item in the menu.
 
-<center>![](./images/image_04.png)</center>
+<center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_04.png)</center>
 
 
