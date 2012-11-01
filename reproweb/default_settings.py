@@ -8,7 +8,7 @@
 ################################################################################
 
 # Flask
-DEBUG = False
+DEBUG = True
 
 # Application Settings
 APP_NAME =  'ReproWeb'  # Lukas
@@ -18,3 +18,4 @@ APP_BASEDIR = '/mnt/tech/repositories/apt/auto-lucid'
 
 # WSGI Settings
 SERVER_PORT = 5000
+LOGFILE = "/var/tmp/%s.log" % APP_NAME.lower()

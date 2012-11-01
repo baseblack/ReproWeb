@@ -186,6 +186,8 @@ def get_package_versions(codename, component, architecture, package):
 @app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/')
 @app.route('/api/<codename>/<component>/<architecture>/<package>/<version>/<format>')
 def get_package_detail(codename, component, architecture, package, version, format=None):
+    app.logger.info(request.path)
+
     g.breadcrumb = [{'name': 'browse', 'url': url_for('get_repository_detail')},
                     {'name': codename, 'url': url_for('get_codename_detail', codename=codename)},
                     {'name': component, 'url': url_for('get_component_detail', codename=codename, component=component)},
@@ -203,7 +205,7 @@ def get_package_detail(codename, component, architecture, package, version, form
     except Exception as e:
         # loop through the references until we find a match. Cache it out afterwards
         # so that we don't have to do this again.
-        app.logger.debug(e)
+        app.logger.info(e)
         for ref in repository.dumpreferences():
             if ref['package'] == package and ref['version'] == version:
                 ref['deb'] = os.path.join(repository.options.basedir, ref['deb'])
