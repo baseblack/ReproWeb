@@ -2,8 +2,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=fapws3-run.py
-#PROGHOME=/opt/reproweb
-PROGHOME=/home/andrew.bunday/Dropbox/Projects/ReproWeb
+PROGHOME=/opt/reproweb
 NAME=reproweb
 DESC=reproweb
 
