@@ -4,11 +4,16 @@ This document demonstrates the installation, setup and usage of the app.
 
 ### Requirements
 
-1.  A debian/ubuntu based system which has the following packages installed:
+1.  A debian/ubuntu based system which __must_ have the following packages installed:
     * __reprepro__ - Debian package repository producer
     * __python-debian__ - Python modules to work with Debian-related data formats
-    * __libevX__ - high-performance event loop library modelled after libevent. You'll
+
+1.  If you would like to run the application using the [fapws3](http://www.fapws.org/) you'll also need these
+    packages installed.
+    * __libev3__ or __libev4__ - high-performance event loop library modelled after libevent. You'll
       need the appropriate version for you distribution.
+    * __libev-dev__ - Development files for libev. Provides ev.h, which is used by pip/fpm when building fapws.
+    * __python-dev__ - Development files for your version python. Used by pip/fpm when building fapws.
     * __fapws3__ - Fast Asyncronous Python Web Server, there is a version bundled in the 3rdParty
      folder which is known to work on ubuntu 10.04. For newer installations you may need to
      rebuild this library. I suggest using [fpm](https://github.com/jordansissel/fpm/wiki/ConvertingPython).
