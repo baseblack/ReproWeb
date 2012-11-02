@@ -1,8 +1,31 @@
 # ReproWeb <small>a _micro_ repository browser</small>
 
-## Features
+Reproweb is designed to provide insight into your self hosted apt repository. It is a web application built on top of the standard debian dpkg toolchain and the repository builder/mirroror [reprepro](http://mirrorer.alioth.debian.org/).
 
-### Browse
+---
+
+# Requirements
+
+This app was developed on Ubuntu 10.04 and required several python packages which are either not included in the base distribution, or are now out of date.
+
+The folder `3rdParty/python` contains copies of these packages.
+
+These should get you quickly up and running. If instead you would prefer to use `pip`, the requirements.txt file lists the required libraries/modules.
+
+1. [Flask](http://flask.pocoo.org/docs/) - the web framework used to build the app.
+1. [Jinja2](http://jinja.pocoo.org/docs/) - templating framework used to build the
+                                            pages.
+1. [wekzeug](http://werkzeug.pocoo.org/) - wsgi utility library used by flask.
+1. [OrderedDict](http://docs.python.org/2/library/collections.html#collections.OrderedDict) -
+   The ordered dictionary python type taken from python 2.7 .
+1. [Reepocheep](http://github.com/andrewbunday/repocheep) - A python module which
+   wraps reprepro, dpkg-deb and several other package utilities.
+
+---
+
+# Features
+
+## Browse
 
 > Do you find yourself wanting to know more about your repository? Perhaps how many packages are in a particular component? or perhaps you don't know the structure of your repository and you want to get to know it more intimately?
 
@@ -16,7 +39,7 @@ The structure will typicially lead you to a filtered packages view only displayi
 
 And don't worry about keeping track of where the package or version you have found is currently residing. The menu at the top of the window will always keep track of your current position for you.
 
-### Search
+## Search
 
 > Do you have a specific package you are looking for? Do you know it's name or version and don't want to have to go browsing around for it?
 
@@ -28,7 +51,9 @@ The list is pagenated, sortable and searchable. To find the package you are look
 
 <center>![](https://raw.github.com/baseblack/ReproWeb/master/documentation/images/image_06.png)</center>
 
-## Upcoming
+---
+
+# Upcoming
 
 ### Soon
 
@@ -40,71 +65,15 @@ The list is pagenated, sortable and searchable. To find the package you are look
 * Repository management.
     * See repoman.sourceforge.net or packages.debian.org for examples of where this can go.
 
-## Requirements
+---
 
-This app was developed on Ubuntu 10.04 and required several python packages which are either not included in the base distribution, or are now out of date.
+# Setup
 
-`3rdParty/python` contains several packages which are neccassary for the app to run.
+## Installation
 
-1. [Flask](http://flask.pocoo.org/docs/) - the web framework used to build the app.
-1. [Jinja2](http://jinja.pocoo.org/docs/) - templating framework used to build the
-                                            pages.
-1. [wekzeug](http://werkzeug.pocoo.org/) - wsgi utility library used by flask.
-1. [OrderedDict](http://docs.python.org/2/library/collections.html#collections.OrderedDict) -
-   The ordered dictionary python type taken from python 2.7 .
-1. [Reepocheep](http://github.com/andrewbunday/repocheep) - A python module which
-   wraps reprepro, dpkg-deb and several other package utilities.
+See the installation page in the docs for __[details](https://github.com/baseblack/ReproWeb/blob/master/documentation/setup.md)__.
 
-## Setup
-
-### Installation
-
-1.    Download the latest tarball out of github from
-      [here](https://github.com/andrewbunday/reproweb/tarball/master). Extract it into the
-      location you want to run your install from.
-
-      The bundle consists of:
-      * reproweb/ - a flask based webapp
-      * 3rdParty/ - dependencies required by the webapp (flask/werkzerg/orderddict/jinja2/fawps3)
-      * Scripts to launch and run the webserver - `debug-run.py` and `fapws3-run.py`
-
-1.    Next, download the most up to date version of
-      [reprocheep](http://github.com/andrewbunday/repocheep).
-      Reepocheep is the module which provides an interface to reprepro and dpkg which the
-      webapp uses. Drop the reprocheep file into the 3rdParty/python folder, or add it
-      somewhere on your PYTHONPATH.
-
-1.    Decide on your configuration file. The file `reproweb/default_settings.py` contains
-      the default settings which the app will try to use when it starts up.
-
-      You can either choose to:
-      * Edit this file directly
-      * Create a new file and inform the webapp to use it by setting the environment variable -
-
-            REPROWEB_SETTINGS=/path/to/my/settings_file
-
-1.    Settings which you can change the defaults of are:
-
-        DEBUG = False
-
-        # Application Settings
-        APP_NAME =  'ReproWeb'
-        APP_SETTINGSFILE = '/var/tmp/reproweb/settings.json'
-        APP_CACHEPATH = '/var/cache/reproweb'
-        APP_BASEDIR = '/mnt/tech/repositories/apt/auto-lucid'
-
-        # WSGI Settings
-        SERVER_PORT = 5000
-
-1.    __IMPORTANT__ - If you choose to leave the cache setting at the default location of
-      `/var/cache/reproweb` then you must make the directory before going any further.
-
-      /var/cache is a restricted directory and will require you to create the the reproweb
-      subfolder with sudo access. Once the directory has been created, change the
-      permissions on it to allow the user who the web app will run as to write to the
-      reproweb directory.
-
-### Running the App
+## Running the App
 
 1.    Included with the app are two run scripts.
       * `debug-run.py` will use Flask's native WSGI server to
@@ -149,7 +118,9 @@ This app was developed on Ubuntu 10.04 and required several python packages whic
 1.    Now you can navigate to any of the other pages in the app. I suggest heading to the
       front page where a welcome message and a few useful links are listed out for you.
 
-### Final Things
+---
+
+## Final Things
 
 When a package version is loaded the app will first try to find it in its local cache. If
 it cannot find a cache file it is forced to traul through the repository to locate the
